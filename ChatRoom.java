@@ -4,10 +4,12 @@ import java.util.List;
 public class ChatRoom {
     String roomName;
     List<User> members;
+    List<String> badWords;
 
     public ChatRoom(String roomName) {
         this.roomName = roomName;
         this.members = new ArrayList<>();
+        this.badWords = new ArrayList<>();
     }
 
     public void registerUser(User user) {
@@ -17,13 +19,33 @@ public class ChatRoom {
         }
     }
 
+    public void addBadWord(String word) {
+        badWords.add(word.toLowerCase());
+    }
+
+    public String filterMessage(String message) {
+        String filteredMessage = message;
+
+        for (String word : badWords) {
+            filteredMessage = filteredMessage.replaceAll(
+                    "(?i)\\b" + java.util.regex.Pattern.quote(word) + "\\b",
+                    "***"
+            );
+        }
+
+        return filteredMessage;
+    }
+
     public void sendBroadcast(User sender, String message) {
+        String filteredMessage = filterMessage(message);
+
         System.out.println("[ChatRoom - " + roomName
-                + "] (Broadcast dari " + sender.name + "): " + message);
+                + "] (Broadcast dari " + sender.name + "): "
+                + filteredMessage);
 
         for (User member : members) {
             if (member != sender) {
-                member.receiveMessage(sender, message);
+                member.receiveMessage(sender, filteredMessage);
             }
         }
     }
@@ -31,13 +53,15 @@ public class ChatRoom {
     public void sendPrivateMessage(
             User sender, String recipientName, String message) {
 
+        String filteredMessage = filterMessage(message);
+
         for (User member : members) {
             if (member.name.equalsIgnoreCase(recipientName)) {
                 System.out.println("[ChatRoom - " + roomName
                         + "] (Private " + sender.name + " -> "
-                        + member.name + "): " + message);
+                        + member.name + "): " + filteredMessage);
 
-                member.receivePrivateMessage(sender, message);
+                member.receivePrivateMessage(sender, filteredMessage);
                 return;
             }
         }

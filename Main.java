@@ -10,12 +10,17 @@ public class Main {
         chatRoom.registerUser(andi);
         chatRoom.registerUser(cici);
 
-        System.out.println("[Budi]: Memproses pengiriman pesan grup...");
+        chatRoom.addBadWord("bodoh");
+        chatRoom.addBadWord("kasar");
+
         budi.send("Halo semuanya!");
 
         System.out.println();
 
-        System.out.println("[Budi]: Mengirim pesan privat ke Cici...");
-        budi.sendPrivate("Cici", "Rahasia ya ini");
+        budi.send("Kamu bodoh!");
+
+        System.out.println();
+
+        budi.sendPrivate("Cici", "Jangan berkata kasar!");
     }
 }
