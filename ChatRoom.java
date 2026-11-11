@@ -5,6 +5,7 @@ public class ChatRoom {
     String roomName;
     List<User> members;
     List<String> badWords;
+    User admin;
 
     public ChatRoom(String roomName) {
         this.roomName = roomName;
@@ -15,7 +16,31 @@ public class ChatRoom {
     public void registerUser(User user) {
         if (!members.contains(user)) {
             members.add(user);
-            user.setChatRoom(this);
+            user.addChatRoom(this);
+
+            if (admin == null) {
+                admin = user;
+            }
+        }
+    }
+
+    public void removeUser(User admin, User user) {
+        if (admin != this.admin) {
+            System.out.println("Hanya admin yang dapat mengeluarkan pengguna.");
+            return;
+        }
+
+        if (members.contains(user)) {
+            if (user == this.admin) {
+                System.out.println("Admin tidak dapat dikeluarkan.");
+                return;
+            }
+
+            members.remove(user);
+            user.chatRooms.remove(this);
+
+            System.out.println(user.name + " telah dikeluarkan dari "
+                    + roomName + ".");
         }
     }
 

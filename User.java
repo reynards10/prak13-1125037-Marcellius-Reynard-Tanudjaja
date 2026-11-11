@@ -1,23 +1,31 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     String name;
-    ChatRoom chatRoom;
+    List<ChatRoom> chatRooms;
 
     public User(String name) {
         this.name = name;
+        this.chatRooms = new ArrayList<>();
     }
 
-    public void setChatRoom(ChatRoom chatRoom) {
-        this.chatRoom = chatRoom;
+    public void addChatRoom(ChatRoom chatRoom) {
+        if (!chatRooms.contains(chatRoom)) {
+            chatRooms.add(chatRoom);
+        }
     }
 
-    public void send(String message) {
-        if (chatRoom != null) {
+    public void send(ChatRoom chatRoom, String message) {
+        if (chatRooms.contains(chatRoom)) {
             chatRoom.sendBroadcast(this, message);
         }
     }
 
-    public void sendPrivate(String recipientName, String message) {
-        if (chatRoom != null) {
+    public void sendPrivate(
+            ChatRoom chatRoom, String recipientName, String message) {
+
+        if (chatRooms.contains(chatRoom)) {
             chatRoom.sendPrivateMessage(this, recipientName, message);
         }
     }
