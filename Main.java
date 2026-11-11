@@ -1,7 +1,6 @@
 public class Main {
     public static void main(String[] args) {
         ChatRoom general = new ChatRoom("General");
-        ChatRoom sports = new ChatRoom("Sports");
 
         User budi = new User("Budi");
         User andi = new User("Andi");
@@ -9,34 +8,39 @@ public class Main {
 
         general.registerUser(budi);
         general.registerUser(andi);
-
-        sports.registerUser(budi);
-        sports.registerUser(cici);
+        general.registerUser(cici);
 
         general.addBadWord("bodoh");
-        sports.addBadWord("kasar");
 
-        System.out.println("=== GENERAL ===");
-        budi.send(general, "Halo anggota General!");
-
-        System.out.println();
-
-        System.out.println("=== SPORTS ===");
-        budi.send(sports, "Halo anggota Sports!");
+        System.out.println("=== BROADCAST ===");
+        budi.send(general, "Halo semuanya!");
 
         System.out.println();
 
-        System.out.println("=== ADMIN KICK ===");
-        general.removeUser(budi, andi);
+        System.out.println("=== PRIVATE MESSAGE ===");
+        budi.sendPrivate(general, "Cici", "Halo Cici!");
 
         System.out.println();
 
-        System.out.println("=== GENERAL SETELAH KICK ===");
-        budi.send(general, "Andi sudah tidak ada di sini.");
+        System.out.println("=== MUTE USER ===");
+        general.muteUser(budi, andi);
+
+        andi.send(general, "Halo semuanya!");
 
         System.out.println();
 
-        System.out.println("=== SPORTS SETELAH KICK ===");
-        budi.send(sports, "Cici masih ada di Sports.");
+        System.out.println("=== BUDI MENGIRIM PESAN ===");
+        budi.send(general, "Jangan berkata bodoh!");
+
+        System.out.println();
+
+        System.out.println("=== UNMUTE USER ===");
+        general.unmuteUser(budi, andi);
+
+        andi.send(general, "Saya sudah bisa mengirim pesan!");
+
+        System.out.println();
+
+        general.showHistory();
     }
 }
