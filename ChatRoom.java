@@ -27,4 +27,21 @@ public class ChatRoom {
             }
         }
     }
+
+    public void sendPrivateMessage(
+            User sender, String recipientName, String message) {
+
+        for (User member : members) {
+            if (member.name.equalsIgnoreCase(recipientName)) {
+                System.out.println("[ChatRoom - " + roomName
+                        + "] (Private " + sender.name + " -> "
+                        + member.name + "): " + message);
+
+                member.receivePrivateMessage(sender, message);
+                return;
+            }
+        }
+
+        System.out.println("Pengguna tidak ditemukan.");
+    }
 }
